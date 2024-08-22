@@ -8,7 +8,7 @@ public class PGMS_240822_광물캐기 {
     public int solution(int[] picks, String[] minerals) {
         int answer = 0;
         int[] neededEnerge = calcNeededEnerge(picks, minerals);
-        answer = findBestCase(picks, minerals, neededEnerge);
+        answer = calcBestCase(picks, minerals, neededEnerge);
 
         return answer;
     }
@@ -46,7 +46,7 @@ public class PGMS_240822_광물캐기 {
         return neededEnerge;
     }
 
-    int findBestCase(int[] picks, String[] minerals, int[] neededEnerge) {
+    int calcBestCase(int[] picks, String[] minerals, int[] neededEnerge) {
         int totalEnerge = 0;    // 다 캐는데 드는 피로도
 
         PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() { // 피로도 큰 순, 인덱스와 함께 pq에 저장
