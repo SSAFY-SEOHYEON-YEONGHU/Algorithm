@@ -7,13 +7,13 @@ public class PGMS_240822_광물캐기 {
 
     public int solution(int[] picks, String[] minerals) {
         int answer = 0;
-        int[] neededEnerge = calcBestCase(picks, minerals);
+        int[] neededEnerge = calcNeededEnerge(picks, minerals);
         answer = findBestCase(picks, minerals, neededEnerge);
 
         return answer;
     }
 
-    int[] calcBestCase(int[] picks, String[] minerals) {    // 5개씩 끊어서 돌 곡괭이 기준 피로도 저장하는 함수
+    int[] calcNeededEnerge(int[] picks, String[] minerals) {    // 5개씩 끊어서 돌 곡괭이 기준 피로도 저장하는 함수
         int picksCount = 0; // 곡괭이 개수만큼만 광물 캐는 데 사용 가능하므로 곡괭이 개수도 구해야 함.
         for (int i = 0; i < picks.length; i++) picksCount += picks[i];
         int dividedByFive = minerals.length%5 == 0 ? minerals.length/5 : minerals.length/5 + 1; // 우선 광물을 5개씩 끊었을 때 몇 칸이 될지 구함
