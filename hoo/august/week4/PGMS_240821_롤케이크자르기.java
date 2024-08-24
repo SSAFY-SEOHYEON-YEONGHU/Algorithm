@@ -1,4 +1,4 @@
-package august;
+package august.week4;
 
 public class PGMS_240821_롤케이크자르기 {
 
