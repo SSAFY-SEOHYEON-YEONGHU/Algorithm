@@ -1,10 +1,6 @@
 package august.week4;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-public class PGMS_240824_혼자하는틱택토 {
+public class PGMS_240824_240825_혼자하는틱택토 {
 
     boolean isRight;    // 틱택토 판을 만들어 가던 중 주어진 판과 동일한 판을 발견했는 지 판단
     char[] OX = new char[] {'X', 'O'};  // 턴에 따라 놓을 말
