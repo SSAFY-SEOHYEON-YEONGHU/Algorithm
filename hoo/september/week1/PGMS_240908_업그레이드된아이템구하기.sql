@@ -1,6 +1,6 @@
 select a.item_id, b.item_name, b.rarity
 from item_tree a
-left join item_info b
+join item_info b
 on a.item_id = b.item_id
 where a.parent_item_id in
 (select item_id
