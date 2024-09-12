@@ -27,7 +27,7 @@ public class PGMS_240912_시소짝꿍_정리안한거 {
 
     long countFair(int[] weights, Map<Integer, Integer> sameNumberMap) {
         long answer = 0;
-        List<Integer> noDuplicateNumbers = makeNoDuplicateNumbers(weights, sameNumberMap);  // 같은 숫자로 이루어진 쌍은 미리 정답에 계산 후 중복을 제거한 숫자들만 남긴 리스트 생성
+        List<Integer> noDuplicateNumbers = makeNoDuplicateNumbers(weights, sameNumberMap);  // 같은 숫자 중복을 제거한 숫자들만 남긴 리스트 생성
         // System.out.println(answer);
         // System.out.println(noDuplicateNumbers);
         // 2100 => 1050, 700, 525으로 만들기 가능
@@ -38,7 +38,7 @@ public class PGMS_240912_시소짝꿍_정리안한거 {
             for (int j = 2; j <= 4; j++) {
                 multipliedWeights[noDuplicateNumbers.get(i) * j] += sameNumberMap.get(noDuplicateNumbers.get(i));
             }
-            if (sameNumberMap.get(noDuplicateNumbers.get(i)) >= 2) answer -= calcCombination(sameNumberMap.get(noDuplicateNumbers.get(i))) * 2L; // 같은 수는 만들 수 있는 조합 개수 * 2(결국 2, 3, 4 곱한 것 중 한 조합만 카운트 돼야하므로)를 미리 빼줌
+            if (sameNumberMap.get(noDuplicateNumbers.get(i)) >= 2) answer -= calcCombination(sameNumberMap.get(noDuplicateNumbers.get(i))) * 2L; // 중복되는 수가 있는 경우는 만들 수 있는 조합 개수 * 2(결국 2, 3, 4 곱한 세 가지 중 한 경우만 카운트 돼야하므로)를 미리 빼줌
         }
 
         for (int i = 0; i < multipliedWeights.length; i++) {
