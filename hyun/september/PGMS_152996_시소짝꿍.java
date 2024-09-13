@@ -2,41 +2,72 @@ package implementation;
 
 import java.util.*;
 
-public class PGMS_152996_시소짝꿍 {
-    public long solution(int[] weights) {
-        long answer = 0;
+class PGMS_152996_시소짝꿍 {
+    int[] input;
+    HashMap<Integer, Integer> hmap;
+    long answer = 0;
+
+    public void eraseDup(){
+        hmap = new HashMap<>();
+
+        for(int su : input){
+            if(hmap.containsKey(su)) hmap.put(su, hmap.get(su) + 1);
+            else hmap.put(su,1);
+        }
+
+        input = new int[hmap.size()];
+        int idx = 0;
+        for(int w : hmap.keySet()){
+            if(hmap.get(w) > 1) {
+                long cnt = hmap.get(w);
+                answer += ((cnt * (cnt-1))/2);
+            }
+            input[idx++] = w;
+        }
+
+    }
+
+    public long simulation(){
 
         ArrayList<Integer>[] cnt = new ArrayList[5000];
         for(int i=0; i<5000; i++) cnt[i] = new ArrayList<>();
 
-        for(int i=0; i<weights.length; i++){
-            int su = weights[i];
-            cnt[su]. add(i);
+        for(int i=0; i<input.length; i++){
+            int su = input[i];
+            // cnt[su]. add(i);
             cnt[su*2].add(i);
             cnt[su*3].add(i);
             cnt[su*4].add(i);
         }
 
-        // Arrays.sort(weights);
-        int[] dx = {1,2,3,4};
-        boolean[][] visited = new boolean[weights.length][weights.length];
-        for(int i=0; i<weights.length; i++){
+        int[] dx = {2,3,4};
+        boolean[][] visited = new boolean[input.length][input.length];
+        for(int i=0; i<input.length; i++){
             visited[i][i] = true;
             for(int add : dx){
-                int nNum = weights[i] * add;
+                int nNum = input[i] * add;
                 for(int idx : cnt[nNum]){
-                    //System.out.println("현재 " + i + " " + nNum + " " + idx);
+                    //System.out.println("현재 " + i + ":" + nNum + " " + idx );
                     if(visited[idx][i]) continue;
                     visited[idx][i] = true;
                     visited[i][idx] = true;
-                    answer++;
+                    long acnt = hmap.get(input[i]);
+                    long bcnt = hmap.get(input[idx]);
+                    answer+=(acnt * bcnt);
                     //System.out.println("정답");
                 }
                 //System.out.println();
             }
         }
 
-
         return answer;
+    }
+
+    public long solution(int[] weights) {
+        input = weights;
+
+        eraseDup();
+
+        return simulation();
     }
 }
