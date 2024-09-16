@@ -3,75 +3,56 @@ package backtracking;
 import java.util.*;
 
 public class PGMS_12952_NQUEEN {
-    ArrayList<Node> axios = new ArrayList<>();
     int N;
     int result = 0;
     int[][] map;
     int[] dx = {-1,-1,1,1};
     int[] dy = {-1,1,-1,1};
 
-    public class Node{
-        int x,y;
-        Node(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
-    }
 
-    public boolean checkOne(int x, int y){
+    public void putQueen(int x, int y){
         // 가로
-        for(int i=0; i<N; i++) if(y!=i && map[x][i] == 1) return false;
+        for(int i=0; i<N; i++) map[x][i] = 1;
         // 세로
-        for(int i=0; i<N; i++) if(x!=i && map[i][y] == 1) return false;
+        for(int i=0; i<N; i++) map[i][y] = 1;
         //대각선
-        for(int k=0; k<N; k++){
+        for(int k=0; k<4; k++){
             int cx = x;
             int cy = y;
             while(true){
                 cx += dx[k];
                 cy += dy[k];
                 if(cx < 0 || cx >= N || cy < 0 || cy >= N) break;
-                if(map[cx][cy] == 1) return false;
+                map[cx][cy] = 1;
             }
         }
-
-        return true;
     }
 
-    public boolean checkAll(){
-        for(int i=0; i<N; i++){
-            for(int j=0; j<N; j++){
-                if(map[i][j] == 1)
-                    if(!checkOne(i,j)) return false;
-            }
-        }
-        return true;
-    }
-
-    public void dfs(int idx, int cnt){
+    public void dfs(int x, int y, int cnt){
         if(cnt == N){
-            if(checkAll()) result++;
+            result++;
             return;
         }
 
-        for(int i=idx; i<axios.size(); i++){
-            Node cur = axios.get(i);
-            map[cur.x][cur.y] = 1;
+        // map 을 저장해놓음
+        int[][] tmp = new int[N][N];
+        for(int i=0; i<N; i++) tmp[i] = map[i].clone();
 
-            dfs(i+1, cnt+1);
-
-            map[cur.x][cur.y] = 0;
+        for(int i=x; i<N; i++){
+            for(int j=y; j<N; j++){
+                if(map[i][j] == 0){
+                    putQueen(i,j); // 배열에 표시
+                    dfs(x,y+1,cnt + 1);
+                    for(int z=0; z<N; z++) map[z] = tmp[z].clone();// 원복
+                }
+            }
         }
     }
 
     public void simulation(){
-        // axios 에 4x4 좌표들 채워주기
-        for(int i=0; i<N; i++)
-            for(int j=0; j<N; j++)
-                axios.add(new Node(i,j));
 
         // dfs
-        dfs(0,0);
+        dfs(0,0,0);
 
     }
     public int solution(int n) {
