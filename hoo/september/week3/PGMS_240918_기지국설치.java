@@ -1,7 +1,7 @@
 package september.week3;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PGMS_240918_기지국설치 {
 
@@ -12,58 +12,28 @@ public class PGMS_240918_기지국설치 {
     }
 
     int construct5G(int n, int[] stations, int w) {
-        int constructCount = 0;
+        int answer = 0;
+        List<Integer> neededLength = calcNeededLength(n, stations, w);
+        int nowNeed;
+        for (int i = 0; i < neededLength.size(); i++) { // 기지국이 커버하지 못하는 범위들에 대해서
+            nowNeed = neededLength.get(i);
 
-        int markCount = 0;
-        boolean[] mark = makeMark(n, stations, w);
-        for (int i = 1; i <= n; i++) if (mark[i]) markCount++;
-        Queue<Integer> q = makeInitStationsQueue(n, stations, w);
-
-        int nowStation;
-        int stationLeft, stationRight;
-        while (!q.isEmpty() && markCount < n) {
-            nowStation = q.poll();
-            stationLeft = nowStation - (2*w+1);
-            stationRight = nowStation + (2*w+1);
-            constructCount++;
-            for (int i = Math.max(1, nowStation - w); i <= Math.min(n, nowStation + w); i++) {
-                if (!mark[i]) { // 커버되는 범위가 아니면 커버되게끔 표시
-                    mark[i] = true;
-                    markCount++;
-                }
-            }
-            if (stationLeft >= 1 && !mark[stationLeft]) q.offer(stationLeft);
-            if (stationRight <= n && !mark[stationRight]) q.offer(stationRight);
+            answer += (nowNeed%(2*w+1) == 0)? nowNeed/(2*w+1):nowNeed/(2*w+1)+1;    // 그 범위들의 길이를 커버할 수 있는 기지국의 최소 개수를 정답에 더해줌
         }
-        constructCount += ((n - markCount)%w == 0)? (n-markCount)/w:(n-markCount)/w+1;
-        // System.out.println(Arrays.toString(mark));
-        // System.out.println(markCount);
-        // System.out.println(constructCount);
 
-        return constructCount;
+        return answer;
     }
 
-    boolean[] makeMark(int n, int[] stations, int w) {
-        boolean[] mark = new boolean[n+1];  // 전파가 커버하는 영역을 표시하는 배열
-        for (int i = 0; i < stations.length; i++) {
-            for (int j = Math.max(1, stations[i] - w); j <= Math.min(n, stations[i] + w); j++) mark[j] = true;
+    List<Integer> calcNeededLength(int n, int[] stations, int w) {
+        List<Integer> neededLength = new ArrayList<>(); // 초기에 기지국들이 커버하는 범위를 제외한, 전파를 전달해야 하는 곳의 길이를 저장할 리스트
+        if (stations[0]-(w+1) >= 1) neededLength.add(stations[0]-(w+1));    // 첫 기지국 전까지 전파가 안닿는 길이 삽입
+        for (int i = 1; i < stations.length; i++) {
+            if ((stations[i-1]+(w+1)) <= (stations[i]-(w+1))) neededLength.add((stations[i]-w) - (stations[i-1]+(w+1))); // 이전 기지국과 지금 기지국의 범위가 커버하지 못하는 범위가 있다면 리스트에 넣어줌
         }
 
+        if (stations[stations.length-1]+(w+1) <= n) neededLength.add(n - (stations[stations.length-1]+w)); // 마지막 기지국에서 마지막 아파트까지 범위 중 전파가 안닿는 길이 삽입
 
-        return mark;
-    }
-
-    Queue<Integer> makeInitStationsQueue(int n, int[] stations, int w) {
-        Queue<Integer> q = new ArrayDeque<>();  // 설치된 기지국의 범위를 벗어나는 왼쪽, 오른쪽에 기지국을 설치하는 것을 형상화하기 위해 큐를 이용
-        int stationLeft, stationRight;
-        for (int i = 0; i < stations.length; i++) {
-            stationLeft = stations[i] - (2*w+1);
-            stationRight = stations[i] + (2*w+1);
-            if (stationLeft >= 1) q.offer(stationLeft);
-            if (stationRight <= n) q.offer(stationRight);
-        }
-
-        return q;
+        return neededLength;
     }
 
 }
