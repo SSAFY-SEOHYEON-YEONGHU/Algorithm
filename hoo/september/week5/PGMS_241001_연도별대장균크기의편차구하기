@@ -1,0 +1,9 @@
+-- 코드를 작성해주세요
+select YEAR(a.differentiation_date) as YEAR, (b.size - a.size_of_colony) as YEAR_DEV, a.id as ID
+from ecoli_data as a
+join (
+    select MAX(size_of_colony) as size, YEAR(differentiation_date) as year_in  # 연도 별 최대 크기 가져오는 쿼리
+    from ecoli_data
+    group by year_in) as b
+on YEAR(a.differentiation_date) = b.year_in
+order by YEAR asc, YEAR_DEV asc;
