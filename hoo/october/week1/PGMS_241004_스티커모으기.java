@@ -1,4 +1,4 @@
-package september.week5;
+package october.week1;
 
 public class PGMS_241004_스티커모으기 {
 
