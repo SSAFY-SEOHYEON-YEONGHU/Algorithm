@@ -1,6 +1,6 @@
 package october.week3;
 
-public class PGMS_241016_n진수게임 {
+public class PGMS_241015_n진수게임 {
 
     public String solution(int n, int t, int m, int p) {
         String answer = calcNumber(n, t, m, p);
