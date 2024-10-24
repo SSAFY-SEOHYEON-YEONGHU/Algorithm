@@ -24,11 +24,14 @@ public class Main_8979_올림픽 {
         @Override
         public int compareTo(Country c) {
             if (this.gold == c.gold) {  // 금메달 수가 같다면
-                if (this.silver == this.silver) return c.copper - this.copper;  // 그 와중에 은메달 수도 같다면 동메달 개수 내림차순
+                if (this.silver == c.silver) return c.copper - this.copper;  // 그 와중에 은메달 수도 같다면 동메달 개수 내림차순
                 return c.silver - this.silver;  // 은메달 개수 내림차순
             }
             return  c.gold - this.gold; // 금메달 개수 내림차순
         }
+
+        @Override
+        public String toString() { return this.countryNumber + " " + this.gold + " " + this.silver + " " + this.copper; }
     }
 
     static int N, K;
@@ -60,14 +63,14 @@ public class Main_8979_올림픽 {
     static int calcRate(PriorityQueue<Country> pq) {
         int rate = 1;
         int sameRateCount = 1;  // 공동 등수를 카운트하는 변수
-        int[] beforeMedals = new int[3];    // 공동 등수 판별을 위해 이전 국가 메달 개수 저장할 배열
 
-        Country now;
+        Country now, next;
         while (!pq.isEmpty()) {
             now = pq.poll();
-            if (now.countryNumber == K) return rate;    // 등수 찾고자 하는 국가 등장 시 등수 반환
+            next = pq.peek();
 
-            if (now.gold == beforeMedals[0] && now.silver == beforeMedals[1] && now.copper == beforeMedals[2]) {    // 공동 등수 처리할 국가 나오면 공동 등수 카운트 +1
+            if (now.countryNumber == K) return rate;    // 등수 찾고자 하는 국가 등장 시 등수 반환
+            if (now.gold == next.gold && now.silver == next.silver && now.copper == next.copper) {    // 공동 등수 처리할 국가 나오면 공동 등수 카운트 +1
                 sameRateCount++;
                 continue;
             }
