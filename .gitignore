@@ -1,5 +1,7 @@
 .idea/
 gradle/
+src/
+out/
 
 *.jar
 *.properties
