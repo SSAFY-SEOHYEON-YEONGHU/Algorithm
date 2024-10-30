@@ -28,28 +28,23 @@ public class PGMS_241030_경주로건설 {
 
     public int simulation(){
         Queue<Node> q = new ArrayDeque<>();
-        int[][][] visited = new int[N][N][4];
+        int[][] visited = new int[N][N];
         for(int i=0; i<N; i++)
             for(int j=0; j<N; j++)
-                for(int k=0; k<4; k++)
-                    visited[i][j][k] = Integer.MAX_VALUE;
-
-        visited[0][0][0] = 0;
-        visited[0][0][1] = 0;
-        visited[0][0][2] = 0;
-        visited[0][0][3] = 0;
+                visited[i][j] = Integer.MAX_VALUE;
 
         if(map[0][1] == 0) {
             q.add(new Node(0,1,3));
-            visited[0][1][3] = 100;
+            visited[0][1] = 100;
         }
         if(map[1][0] == 0) {
             q.add(new Node(1,0,1));
-            visited[1][0][1] = 100;
+            visited[1][0] = 100;
         }
 
         while(!q.isEmpty()){
             Node cur = q.poll();
+
 
             for(int k=0; k<4; k++){
                 int nx = cur.x + dx[k];
@@ -57,21 +52,19 @@ public class PGMS_241030_경주로건설 {
 
                 if(nx < 0 || nx >= N || ny <0 || ny >= N || map[nx][ny] == 1) continue;
 
-                int cost = visited[cur.x][cur.y][cur.d];
-                if(calCost(cur.d, k)) cost += 100;
+                int cost = visited[cur.x][cur.y];
+                boolean isFlag = false;
+                if(calCost(cur.d, k)) {cost += 100; isFlag = true;}
                 else cost += 600;
 
-                if(visited[nx][ny][k] > cost){
+                if(visited[nx][ny] >= cost){
                     q.add(new Node(nx,ny,k));
-                    visited[nx][ny][k] = cost;
+                    visited[nx][ny] = cost;
                 }
-
             }
         }
 
-        int answer = visited[N-1][N-1][0];
-        for(int i=1; i<4; i++) answer = Math.min(answer, visited[N-1][N-1][i]);
-        return answer;
+        return visited[N-1][N-1];
 
     }
     public int solution(int[][] board) {
