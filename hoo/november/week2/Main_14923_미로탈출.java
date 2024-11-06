@@ -59,13 +59,13 @@ public class Main_14923_미로탈출 {
 
         int[] dirRow = new int[] {-1, 0, 1, 0};
         int[] dirCol = new int[] {0, 1, 0, -1};
-        int minDist = Integer.MAX_VALUE;
+//        int minDist = Integer.MAX_VALUE;
         Hongik now;
         while (!q.isEmpty()) {
             now = q.poll();
             if (now.row == Ex && now.col == Ey) {
-                minDist = Math.min(minDist, now.dist);
-                continue;
+                System.out.println(now.dist);
+                return;
             }
 
             int nextRow, nextCol;
@@ -87,7 +87,7 @@ public class Main_14923_미로탈출 {
             }
         }
 
-        System.out.println((minDist==Integer.MAX_VALUE)? -1:minDist);
+        System.out.println(-1);
     }
 
     static boolean isOuted(int row, int col) {
