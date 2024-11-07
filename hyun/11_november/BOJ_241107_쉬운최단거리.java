@@ -21,10 +21,10 @@ public class BOJ_241107_쉬운최단거리 {
 
     public static void simulation(){
         Queue<Node> q = new ArrayDeque<>();
-        boolean[][] visited = new boolean[N][M];
+        //boolean[][] visited = new boolean[N][M];
 
         q.add(new Node(ex,ey));
-        visited[ex][ey] = true;
+        //visited[ex][ey] = true;
 
         while(!q.isEmpty()){
             Node cur = q.poll();
@@ -32,10 +32,9 @@ public class BOJ_241107_쉬운최단거리 {
             for(int k =0; k<4; k++){
                 int nx = cur.x + dx[k];
                 int ny = cur.y + dy[k];
-                if(nx<0 || nx >= N || ny < 0 || ny >= M || visited[nx][ny] || input[nx][ny] != 1) continue;
+                if(nx<0 || nx >= N || ny < 0 || ny >= M || map[nx][ny] != -1 || input[nx][ny] != 1) continue;
 
                 q.add(new Node(nx, ny));
-                visited[nx][ny] = true;
                 map[nx][ny] = map[cur.x][cur.y] + 1;
             }
         }
