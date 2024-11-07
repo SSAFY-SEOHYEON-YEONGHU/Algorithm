@@ -4,75 +4,78 @@ import java.io.*;
 import java.util.*;
 
 public class BOJ_241107_쉬운최단거리 {
-    static int N,M;
-    static int ex,ey;
-    static int[][] input;
-    static int[][] map;
-    static int[] dx = {-1,1,0,0};
-    static int[] dy = {0,0,-1,1};
-    static StringBuilder sb = new StringBuilder();
-    static class Node{
-        int x,y;
-        Node(int x,int y){
-            this.x = x;
-            this.y = y;
-        }
-    }
-
-    public static void simulation(){
-        Queue<Node> q = new ArrayDeque<>();
-        boolean[][] visited = new boolean[N][M];
-
-        q.add(new Node(ex,ey));
-        visited[ex][ey] = true;
-
-        while(!q.isEmpty()){
-            Node cur = q.poll();
-
-            for(int k =0; k<4; k++){
-                int nx = cur.x + dx[k];
-                int ny = cur.y + dy[k];
-                if(nx<0 || nx >= N || ny < 0 || ny >= M || visited[nx][ny] || input[nx][ny] != 1) continue;
-
-                q.add(new Node(nx, ny));
-                visited[nx][ny] = true;
-                map[nx][ny] = map[cur.x][cur.y] + 1;
-            }
-        }
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                sb.append(map[i][j]).append(" ");
-            }
-            sb.append("\n");
-        }
-        System.out.println(sb);
-
-    }
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        String[] splits = br.readLine().split(" ");
+        int n = Integer.parseInt(splits[0]);
+        int m = Integer.parseInt(splits[1]);
+        int[][] distance = new int[n][m];
+        boolean[][] cantGo = new boolean[n][m];
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        int[] yQ = new int[n * m];
+        int[] xQ = new int[n * m];
+        int front = 1;
+        int back = 0;
 
-        input = new int[N][M];
-        map = new int[N][M];
+        StringBuilder sb = new StringBuilder((n * m) << 3);
 
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < M; j++) {
-                input[i][j] = Integer.parseInt(st.nextToken());
-                if(input[i][j] == 2){
-                    ex = i;
-                    ey = j;
-                    map[i][j] = 0;
+        for (int i = 0; i < n; i++) {
+            String line = br.readLine();
+            for (int j = 0; j < m; j++) {
+                switch (line.charAt(j << 1)) {
+                    case '0':
+                        cantGo[i][j] = true;
+                        break;
+                    case '2':
+                        distance[i][j] = 1;
+                        yQ[0] = i;
+                        xQ[0] = j;
+                        break;
                 }
-                else if(input[i][j] == 0) map[i][j] = 0;
-                else map[i][j] = -1;
             }
         }
 
-        simulation();
+        while (front != back) {
+            int y = yQ[back];
+            int x = xQ[back++];
+
+            if (x > 0 && cantGo[y][x - 1] == false && distance[y][x - 1] == 0) {
+                yQ[front] = y;
+                xQ[front++] = x - 1;
+                distance[y][x - 1] = distance[y][x] + 1;
+            }
+
+            if (x < m - 1 && cantGo[y][x + 1] == false && distance[y][x + 1] == 0) {
+                yQ[front] = y;
+                xQ[front++] = x + 1;
+                distance[y][x + 1] = distance[y][x] + 1;
+            }
+
+            if (y > 0 && cantGo[y - 1][x] == false && distance[y - 1][x] == 0) {
+                yQ[front] = y - 1;
+                xQ[front++] = x;
+                distance[y - 1][x] = distance[y][x] + 1;
+            }
+
+            if (y < n - 1 && cantGo[y + 1][x] == false && distance[y + 1][x] == 0) {
+                yQ[front] = y + 1;
+                xQ[front++] = x;
+                distance[y + 1][x] = distance[y][x] + 1;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (distance[i][j] != 0)
+                    sb.append(distance[i][j] - 1).append(' ');
+                else if (cantGo[i][j])
+                    sb.append("0 ");
+                else
+                    sb.append("-1 ");
+            }
+            sb.append('\n');
+        }
+
+        System.out.print(sb);
     }
 }
