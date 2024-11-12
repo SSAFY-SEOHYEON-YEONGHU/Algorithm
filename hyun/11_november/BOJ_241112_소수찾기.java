@@ -32,7 +32,6 @@ public class BOJ_241112_소수찾기 {
     }
 
     public void comb(boolean[] visited, String made, int cnt){
-        // 소수 확인
         checkPrime(made);
 
         if(cnt == N) return;
