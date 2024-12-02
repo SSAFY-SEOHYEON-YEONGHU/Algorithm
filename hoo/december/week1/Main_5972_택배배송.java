@@ -68,6 +68,7 @@ public class Main_5972_택배배송 {
         List<Edge> nextEdgeList;
         while (!pq.isEmpty()) {
             now = pq.poll();
+            if (now.from == N) break;   // N에 도착하면 반복문 종료
 
             nextEdgeList = edgeList.get(now.to);
             for (Edge next : nextEdgeList) {
