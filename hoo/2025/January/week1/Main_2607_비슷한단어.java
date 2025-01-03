@@ -38,7 +38,7 @@ public class Main_2607_비슷한단어 {
     static boolean judgeIsSimilar(int[] wordCountInFirstWord, int compareWordIndex) {
         int[] wordCountsInCompareWord = countWordsInWord(compareWordIndex);
         int sameCount = 0;
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 26; i++) {  // 둘 중 더 적은 개수를 같은 문자 개수에 더해줌
             if (wordCountInFirstWord[i] > 0 && wordCountsInCompareWord[i] > 0) sameCount += Math.min(wordCountInFirstWord[i], wordCountsInCompareWord[i]);
 
         }
