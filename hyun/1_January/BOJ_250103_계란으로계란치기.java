@@ -2,7 +2,7 @@ package backtracking;
 
 import java.io.*;
 import java.util.*;
-public class BOJ_250103_계란으로계란치기 {
+public class BOJ_250103_계란으로계란치기  {
     static int N;
     static int[][] eggs;
     static int answer = 0;
@@ -17,29 +17,35 @@ public class BOJ_250103_계란으로계란치기 {
     }
 
     static void start(int cnt){
+        // 갯수 세기
+
+
         if(cnt == N) {
-            // 갯수 세기
             int sum = 0;
             for(int i=0; i<N; i++) if(eggs[i][0] <= 0) sum++;
             answer = Math.max(answer,sum);
             return;
         }
 
-        if(eggs[cnt][0] > 0) {
-            for (int i = 0; i < N; i++) {
-                if (i == cnt || eggs[i][0] <= 0) continue;
-
-                eggs[cnt][0] -= eggs[i][1];
-                eggs[i][0] -= eggs[cnt][1];
-
-                start(cnt + 1);
-
-                eggs[cnt][0] += eggs[i][1];
-                eggs[i][0] += eggs[cnt][1];
-            }
-
+        if(eggs[cnt][0] <= 0) {
+            start(cnt+1);
+            return;
         }
-        else start(cnt+1);
+
+        boolean isBroke = false;
+        for (int i = 0; i < N; i++) {
+            if(i==cnt || eggs[i][0] <= 0) continue;
+
+            eggs[cnt][0] -= eggs[i][1];
+            eggs[i][0] -= eggs[cnt][1];
+            isBroke = true;
+            start(cnt+1);
+
+            eggs[cnt][0] += eggs[i][1];
+            eggs[i][0] += eggs[cnt][1];
+        }
+
+        if(isBroke == false) start(cnt+1);
     }
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
