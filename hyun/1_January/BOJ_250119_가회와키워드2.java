@@ -1,3 +1,4 @@
+
 package hash;
 
 import java.io.BufferedReader;
